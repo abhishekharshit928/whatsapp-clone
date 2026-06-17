@@ -3,47 +3,59 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRouter from "./routers/authRouter.js";
+import chatRouter from "./routers/chatRouter.js";
+import cookieParser from "cookie-parser";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 dotenv.config();
 
 const app = express();
+const server = createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true,
+  },
+});
 
 const DB_path = process.env.MONGO_URL;
 
 // Middlewares
 app.use(cors({
   origin: "http://localhost:5173",
-  credentials: true
+  credentials: true,
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// Test route
-app.get("/api/test", (req, res) => {
-  res.json({
-    message: "Backend Connected Successfully"
+// Socket Connection
+io.on("connection", (socket) => {
+  console.log("User Connected:", socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected:", socket.id);
   });
 });
 
-
 // Routes
 app.use("/api/auth", authRouter);
-
-app.get("/" , (req , res , next) =>{
-  res.send("hello from server");
-})
+app.use("/api/chat", chatRouter);
 
 const PORT = process.env.PORT || 3000;
 
-
-// DB connection + server start
 mongoose.connect(DB_path)
   .then(() => {
     console.log("Connected to MongoDB");
-    app.listen(PORT, () => {
+
+    server.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT}`);
     });
+
   })
-  .catch(err => {
+  .catch((err) => {
     console.log("Error connecting to MongoDB:", err);
   });

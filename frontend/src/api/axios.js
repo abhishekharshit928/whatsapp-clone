@@ -6,7 +6,7 @@ const api = axios.create({
 });
 
 let isRefreshing = false;
-let failedQueue = []; // ✅ queue for parallel requests
+let failedQueue = [];
 
 const processQueue = (error) => {
   failedQueue.forEach((prom) => {
