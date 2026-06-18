@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import Chats from "../components/chats";
 import ChatWindow from "../components/chatWindow";
+import MsgInput from "../components/MsgInput";
 
 function Home() {
   return (
@@ -15,9 +16,14 @@ function Home() {
       </div>
 
       <div
-      className= "flex-1 bg-slate-950"
+      className= "flex-1 bg-slate-950 flex flex-col"
       >
-       <ChatWindow/>
+
+        <div className="*flex-1 overflow-hidden">
+           <ChatWindow/>
+        </div>
+         
+          <MsgInput/>
       </div>
     </div>
     </>

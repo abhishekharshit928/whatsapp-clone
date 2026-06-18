@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRouter from "./routers/authRouter.js";
 import chatRouter from "./routers/chatRouter.js";
+import aiRouter from "./routers/aiRouter.js"
+import messageRouter from "./routers/messageRouter.js"
+import userRouter from "./routers/userRouter.js";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -43,7 +46,11 @@ io.on("connection", (socket) => {
 
 // Routes
 app.use("/api/auth", authRouter);
-app.use("/api/chat", chatRouter);
+app.use("/api/chats", chatRouter);
+app.use("/api/ai", aiRouter)
+app.use("/api/messages", messageRouter);
+app.use("/api/user", userRouter);
+
 
 const PORT = process.env.PORT || 3000;
 
