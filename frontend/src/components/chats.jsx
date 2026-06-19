@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedChat } from "../store/chatSlice";
-// import { socket } from "../../socket/socket";
+ import  socket  from "../../socket/socket";
 import { setChats, updateChat,clearUnread } from "../store/chatListSlice.jsx";
 
+import sideBar from "./sideBar";
 
 const Chats = () =>{
 
@@ -15,7 +16,7 @@ const Chats = () =>{
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
-    // const onlineUsers = useSelector((state) => state.onlineUsers.users)
+     const onlineUsers = useSelector((state) => state.onlineUsers.users)
   const selectedChat = useSelector((state) => state.chat.selectedChat);
 
   const fetchChats = async () => {
@@ -50,7 +51,7 @@ const Chats = () =>{
 
     };
 
-    // socket.on("newMessage", updateNewChats);
+     socket.on("newMessage", updateNewChats);
 
     return () => socket.off("newMessage", updateNewChats);
 
@@ -68,6 +69,7 @@ const Chats = () =>{
 
   return (
   <>
+
     {loading && (
         <div className="flex justify-center items-center h-[80vh]">
           <span className="text-gray-400">Loading..</span>
@@ -85,9 +87,15 @@ const Chats = () =>{
             );
 
             if (!otherUser) return null;
-            // const isOnline = onlineUsers.includes(otherUser._id)
+             const isOnline = onlineUsers.includes(otherUser._id)
 
             return (
+
+              <>
+
+              <div>
+
+              </div>
 
               <div
                 key={chat._id}
@@ -128,7 +136,7 @@ const Chats = () =>{
                 </div>
 
               </div>
-
+              </>
             );
 
           })}

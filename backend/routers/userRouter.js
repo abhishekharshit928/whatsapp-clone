@@ -5,6 +5,6 @@ const userRouter = express.Router();
 
 userRouter.get("/fetchuser" , protect , fetchUser);
 userRouter.get("/fetchalluser" , protect , fetchAllUser);
-userRouter.get("/fetchonlineuser" , protect , fetchOnlineUser);
+userRouter.get("/online" , protect , fetchOnlineUser);
 
 export default userRouter;

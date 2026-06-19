@@ -4,6 +4,8 @@ import chatListReducer from "./chatListSlice";
 import chatReducer from "./chatSlice";
 import uiReducer from "./uiSlice";
 import selectedMessageReducer from "./selectMessageSlice";
+import onlineReducer from "./onlineSlice";
+import resultsReducer from "./resultSlice"
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +13,8 @@ export const store = configureStore({
     chatList: chatListReducer,
     chat:chatReducer,
     ui:uiReducer,
-    selectedMessage:selectedMessageReducer
+    selectedMessage:selectedMessageReducer,
+    onlineUsers:onlineReducer,
+    results:resultsReducer
   },
 });
