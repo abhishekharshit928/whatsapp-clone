@@ -15,15 +15,15 @@ const SearchResults = () => {
   try{
     setLoadingId(user._id);
 
-    const res = await api.get("/chats/findchat",{
-      otherUserId: user._id
+    const res = await api.post("/chats/findchat",{
+      anotherUserId: user._id
     })
     dispatch(setSelectedChat(res.data));
 
   }catch(error){
     console.log("fetch chat error", error.response?.data || error.message);
   }finally{
-    setLoading(null);
+    setLoadingId(null);
   }
  }
 
@@ -37,7 +37,7 @@ const SearchResults = () => {
     )}
 
     {results.map((user) => {
-      const isOnline = onlineUsers.includes(user._id);
+      const isOnline = onlineUser.includes(user._id);
 
       return (
         <div

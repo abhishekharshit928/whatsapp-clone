@@ -11,14 +11,19 @@ const LaptopSearch = () => {
   const [query, setQuery] = useState("");
   const [loading , setLoading] = useState(false);
 
-  const fetchResult = async () =>{
+const fetchResult = async () =>{
     try{
-      if(query.trim.length <= 2) return;
+      if(query.trim().length <= 2) return;
 
       setLoading(true);
 
-      const res = await api.get(`/search/input?q=${query}`);
-      dispatch(setResults(res.data));
+      const res = await api.get(`/user/fetchalluser`);
+
+      const filtered = res.data.filter((user) =>
+        user.userName.toLowerCase().includes(query.trim().toLowerCase())
+      );
+
+      dispatch(setResults(filtered));
 
     }catch(error){
       console.log("error in fetching result", error);

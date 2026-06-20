@@ -4,6 +4,7 @@ import api from "../api/axios";
 import socket from "../../socket/socket.js";
 import { removeSelectedMessage, setSelectedMessage } from "../store/selectMessageSlice";
 import ChatHead from "./chatHead";
+import { BsCheck2, BsCheck2All } from "react-icons/bs";
 
 const ChatWindow = () => {
   const user = useSelector(state => state.auth.user);
@@ -148,6 +149,7 @@ const ChatWindow = () => {
   useEffect(()=>{
 
     const handleSeen = ({chatId})=>{
+      console.log("messagesSeen received", chatId, selectedChat?._id);
 
       if(chatId !== selectedChat?._id)return;
 
@@ -299,33 +301,62 @@ selectedMessage.some(
 m=>m._id===msg._id
 );
 
+const hasMedia = msg.media && msg.media.length > 0;
+
 
 return(
 
 <div
 key={msg._id}
 onContextMenu={(e)=>handelSelection(e,msg)}
+
+
 className={`
-px-4 py-3 rounded-3xl max-w-[75%]
-text-sm shadow-lg
-${isMe
-?"ml-auto bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 text-white"
-:"bg-white/5 backdrop-blur-md border border-white/10 text-gray-200"
+max-w-[60%] w-fit shadow-lg
+${hasMedia
+  ? "rounded-2xl p-1 overflow-hidden"
+  : `px-3 py-1.5 text-[15px] leading-relaxed wrap-break-words
+     ${isMe ? "rounded-2xl rounded-br-md" : "rounded-2xl rounded-bl-md"}`
 }
-${isSelected?"ring-2 ring-purple-400":""}
+${isMe
+  ? `ml-auto ${hasMedia ? "" : "bg-linear-to-br from-purple-400 to-purple-600"} text-white ${hasMedia ? "" : "shadow-purple-900/40"}`
+  : `${hasMedia ? "" : "bg-white/5 backdrop-blur-md border border-white/10"} text-gray-200`
+}
+${isSelected ? "ring-2 ring-purple-400" : ""}
 `}
 >
 
 
 <div>
 {
-msg.isDeleted
-?
-<span className="italic text-gray-400">
-This message was deleted
-</span>
-:
-msg.text
+  msg.isDeleted
+    ? <span className="italic text-gray-400">This message was deleted</span>
+    : (
+      <>
+        {msg.media && msg.media.length > 0 && (
+          <div className="flex flex-col gap-2 mb-1">
+            {msg.media.map((file, idx) => (
+              file.type === "video" ? (
+                <video
+                  key={idx}
+                  src={file.url}
+                  controls
+                  className="rounded-xl max-w-full max-h-64"
+                />
+              ) : (
+                <img
+                  key={idx}
+                  src={file.url}
+                  alt="media"
+                  className="rounded-xl max-w-full max-h-64 object-cover"
+                />
+              )
+            ))}
+          </div>
+        )}
+        {msg.text}
+      </>
+    )
 }
 </div>
 
@@ -344,23 +375,14 @@ minute:"2-digit"
 
 
 {isMe && (
-msg.seen
-?
-<span className="text-cyan-300">✔✔</span>
-:
-<span>✔</span>
+  msg.seen
+    ? <BsCheck2All className="text-[#34B7F1] text-sm" />
+    : <BsCheck2All className="text-white/60 text-sm" />
 )}
-
 </div>
-
-
 </div>
-
 )
-
 })}
-
-
 
 {aiTyping && otherUser?.isAI && (
 <div className="bg-white/5 px-4 py-3 rounded-3xl italic animate-pulse">

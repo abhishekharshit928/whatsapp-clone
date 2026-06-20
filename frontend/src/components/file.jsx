@@ -24,7 +24,25 @@ const AddFile = () => {
   );
 
   const onSubmit = async (data) =>{
-    console.log(data);
+      try {
+    if (!otherUser?._id || !data.media || data.media.length === 0) return;
+
+    const formData = new FormData();
+    formData.append("receiver", otherUser._id);
+
+    for (let i = 0; i < data.media.length; i++) {
+      formData.append("media", data.media[i]);
+    }
+
+    await api.post("/messages/send-media", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    setOpen(false);
+  } catch (error) {
+    console.log("error sending media", error);
+  }
+
   }
 
     useEffect(() => {

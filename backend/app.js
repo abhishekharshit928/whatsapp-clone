@@ -10,6 +10,8 @@ import userRouter from "./routers/userRouter.js";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import User from "./models/user.js";  
+import Message from "./models/message.js";
 
 dotenv.config();
 
@@ -22,6 +24,8 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+
+app.set("io", io); 
 
 const DB_path = process.env.MONGO_URL;
 
@@ -39,10 +43,54 @@ app.use(cookieParser());
 io.on("connection", (socket) => {
   console.log("User Connected:", socket.id);
 
-  socket.on("disconnect", () => {
+  socket.on("join", async (userId) => {
+    if (!userId) return;
+    socket.userId = userId;
+
+    try {
+      await User.findByIdAndUpdate(userId, {
+        socketId: socket.id,
+        isOnline: true,
+      });
+      socket.broadcast.emit("userOnline", userId);
+    } catch (err) {
+      console.log("Error setting socketId on join:", err.message);
+    }
+  });
+  socket.on("seenMessages", async ({ chatId }) => {
+  if (!chatId || !socket.userId) return;
+
+  try {
+    const result = await Message.updateMany(
+      { chatId, senderId: { $ne: socket.userId }, seen: false },
+      { $set: { seen: true } }
+    );
+
+    if (result.modifiedCount > 0) {
+      io.emit("messagesSeen", { chatId, seenBy: socket.userId });
+    }
+  } catch (err) {
+    console.log("Error marking messages as seen:", err.message);
+  }
+});
+
+
+  socket.on("disconnect", async () => {
     console.log("User Disconnected:", socket.id);
+    if (!socket.userId) return;
+
+    try {
+      await User.findByIdAndUpdate(socket.userId, {
+        socketId: null,
+        isOnline: false,
+      });
+      socket.broadcast.emit("userOffline", socket.userId);
+    } catch (err) {
+      console.log("Error clearing socketId on disconnect:", err.message);
+    }
   });
 });
+
 
 // Routes
 app.use("/api/auth", authRouter);

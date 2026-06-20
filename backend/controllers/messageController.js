@@ -51,7 +51,8 @@ export const sendMessage = async (req, res, next) => {
       chat.lastMessage = userMessage._id;
       await chat.save();
 
-      const senderSocketId = req.user?.socketId;
+      const senderUser = await User.findById(senderId);
+      const senderSocketId = senderUser?.socketId;
 
       if (senderSocketId) {
         io.to(senderSocketId).emit("newMessage", userMessage);
@@ -96,7 +97,7 @@ export const sendMessage = async (req, res, next) => {
 
     if (!chat) {
       chat = await Chat.create({
-        participants: [senderId, receiver]
+        participants: [senderId, reciever]
       });
     }
 
@@ -153,7 +154,7 @@ export const fetchMessages = async (req, res) => {
 
 export const sendMedia = async (req, res) => {
   try{
-    const io = app.get("io");
+    const io = req.app.get("io");
     const senderId = req.userId;
     const { receiver} = req.body;
     const media = req.files || [];
@@ -165,11 +166,12 @@ export const sendMedia = async (req, res) => {
 
       if (senderId === receiver) {
       return res.status(400).json({ error: "You cannot send message to yourself" });
+      }
 
       if(!receiver || mediaFiles.length===0){
         return res.status(400).json({error: "missing receiver or media files"});
       }
-    }
+    
         let chat = await Chat.findOne({
       participants: { $all: [senderId, receiver] }
     });
@@ -192,10 +194,11 @@ export const sendMedia = async (req, res) => {
     chat.lastMessage = message._id;
     await chat.save();
 
-    const sender = await User.findById(senderId);
+ const sender = await User.findById(senderId);
+const receiverUser = await User.findById(receiver);
 
-    const senderSocketId = sender?.socketId;
-    const receiverSocketId = receiverUser?.socketId;
+const senderSocketId = sender?.socketId;
+const receiverSocketId = receiverUser?.socketId;
 
     if (senderSocketId) {
       io.to(senderSocketId).emit("newMessage", message);

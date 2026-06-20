@@ -12,22 +12,27 @@ const MobileSearch = () => {
 
   const [loading , setLoading] = useState(false);
 
-    const fetchResult = async () => {
-    try {
-
-      if (query.trim().length <= 2) return;
+const fetchResult = async () =>{
+    try{
+      if(query.trim().length <= 2) return;
 
       setLoading(true);
 
-      const res = await api.get(`/search/input?q=${query}`);
-      dispatch(setResults(res.data));
+      const res = await api.get(`/user/fetchalluser`);
 
-    } catch (error) {
-      console.log("error fetching search results");
-    } finally {
+      const filtered = res.data.filter((user) =>
+        user.userName.toLowerCase().includes(query.trim().toLowerCase())
+      );
+
+      dispatch(setResults(filtered));
+
+    }catch(error){
+      console.log("error in fetching result", error);
+    }
+    finally{
       setLoading(false);
     }
-  };
+  }
 
   useEffect(() => {
 

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import socket from "../../socket/socket";
 import { useEffect} from "react";
-import MsgInput from "./msgInput";
+import MsgInput from "./MsgInput";
 import ChatHead from "./chatHead";
 import ChatWindow from "./chatWindow";
 import DeleteMessage from "./deleteMessage";

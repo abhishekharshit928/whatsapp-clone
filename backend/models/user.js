@@ -17,6 +17,15 @@ isAI: {
     type: Boolean,
     default: false
   }
+  ,
+  socketId:{
+    type: String,
+    default: null
+  },
+  isOnline:{
+    type: Boolean,
+    default: false
+  }
 },{timestamps:true})
 const User = mongoose.model("User", userSchema)
 
