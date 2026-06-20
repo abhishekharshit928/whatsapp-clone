@@ -220,37 +220,24 @@ export const deleteMessageForMe = async (req, res, next) => {
   try {
     const io = req.app.get("io");
     const userId = req.userId;
-    const { selectedMessage } = req.body;
+    const { selectedMessage } = req.body; 
 
-    const message = await Message.findById(selectedMessage);
+    const messageIds = selectedMessage.map(msg => msg._id);
 
-    if (!message) {
-      return res.status(404).json({ message: "Message not found" });
-    }
-
-    await Message.findByIdAndUpdate(
-      selectedMessage,
-      {
-        $addToSet: {
-          deletedFor: userId
-        }
-      }
+    await Message.updateMany(
+      { _id: { $in: messageIds } },
+      { $addToSet: { deletedFor: userId } }
     );
 
     const user = await User.findById(userId);
-
     if (user?.socketId) {
-      io.to(user.socketId).emit("deletedMessage", selectedMessage);
+      io.to(user.socketId).emit("deletedMessage", messageIds);
     }
 
-    return res.status(200).json({
-      message: "Message deleted successfully"
-    });
+    return res.status(200).json({ message: "Messages deleted successfully" });
 
   } catch (error) {
-    res.status(500).json({
-      message: "Server error in deleting message"
-    });
+    res.status(500).json({ message: "Server error in deleting message" });
   }
 };
 

@@ -32,12 +32,11 @@ const selectedContainsDeleted = selectedMessage.some(
 
 const handelDeleteEveryone = async ()=>{
     try {
-        const res = await api.delete("/messages/deleteforeveryone", {data: { selectedMessage }});
+        const res = await api.delete("/messages/deleteforeveryone", {data: { selectedMessages: selectedMessage }});
         dispatch(removeAllSelectedMessage())
     } catch (error) {
         console.log(error)
     }
-    
 }
 
 return (

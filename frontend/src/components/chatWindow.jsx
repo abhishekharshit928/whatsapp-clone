@@ -183,18 +183,13 @@ const ChatWindow = () => {
 
   useEffect(()=>{
 
-    const handleDeletedMessages = delMsg => {
-
-      setMessages(prev =>
-        prev.filter(
-          msg =>
-          !delMsg.some(
-            del=>del._id===msg._id
-          )
-        )
-      );
-
-    };
+const handleDeletedMessages = delMsg => {
+  setMessages(prev =>
+    prev.filter(
+      msg => !delMsg.includes(msg._id)
+    )
+  );
+};
 
 
     const handleDeleteForEveryone = delMsg => {
@@ -215,12 +210,12 @@ const ChatWindow = () => {
 
 
     socket.on(
-      "messagesDeleted",
+      "deletedMessage",
       handleDeletedMessages
     );
 
     socket.on(
-      "messagesDeletedForEveryone",
+       "deletedMessagesForEveryone",
       handleDeleteForEveryone
     );
 
@@ -228,12 +223,12 @@ const ChatWindow = () => {
     return ()=>{
 
       socket.off(
-        "messagesDeleted",
+        "deletedMessage",
         handleDeletedMessages
       );
 
       socket.off(
-        "messagesDeletedForEveryone",
+        "deletedMessagesForEveryone",
         handleDeleteForEveryone
       );
 
@@ -303,6 +298,14 @@ m=>m._id===msg._id
 
 const hasMedia = msg.media && msg.media.length > 0;
 
+const isEmojiOnly = (text) => {
+  if (!text) return false;
+  const emojiRegex = /^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F|\s)+$/u;
+  return emojiRegex.test(text.trim()) && text.trim().length > 0;
+};
+
+const onlyEmoji = !hasMedia && isEmojiOnly(msg.text);
+
 
 return(
 
@@ -313,14 +316,18 @@ onContextMenu={(e)=>handelSelection(e,msg)}
 
 className={`
 max-w-[60%] w-fit shadow-lg
-${hasMedia
-  ? "rounded-2xl p-1 overflow-hidden"
-  : `px-3 py-1.5 text-[15px] leading-relaxed wrap-break-words
-     ${isMe ? "rounded-2xl rounded-br-md" : "rounded-2xl rounded-bl-md"}`
+${onlyEmoji
+  ? "bg-transparent shadow-none text-5xl"
+  : hasMedia
+    ? "rounded-2xl p-1 overflow-hidden"
+    : `px-3 py-1.5 text-[15px] leading-relaxed wrap-break-words
+       ${isMe ? "rounded-2xl rounded-br-md" : "rounded-2xl rounded-bl-md"}`
 }
-${isMe
+${!onlyEmoji && isMe
   ? `ml-auto ${hasMedia ? "" : "bg-linear-to-br from-purple-400 to-purple-600"} text-white ${hasMedia ? "" : "shadow-purple-900/40"}`
-  : `${hasMedia ? "" : "bg-white/5 backdrop-blur-md border border-white/10"} text-gray-200`
+  : !onlyEmoji
+    ? `${hasMedia ? "" : "bg-white/5 backdrop-blur-md border border-white/10"} text-gray-200`
+    : isMe ? "ml-auto" : ""
 }
 ${isSelected ? "ring-2 ring-purple-400" : ""}
 `}

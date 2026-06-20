@@ -9,21 +9,22 @@ import ClearChat from "./clearChat";
 
 
 const ChatHead = () =>{
-     const selectedChat = useSelector((state) => state.chat.selectedChat);
+    const selectedChat = useSelector((state) => state.chat.selectedChat);
     const user = useSelector((state) => state.auth.user)
     const onlineUsers = useSelector((state) => state.onlineUsers.users)
     const dispatch = useDispatch();
+    const [open, setOpen] = useState(false);
 
-    const otherUser = selectedChat?.participants?.find((u) => u._id !== user._id);
-    const isOnline = onlineUsers.includes(otherUser._id);
+    const otherUser = selectedChat?.participants?.find(
+        (u) => u._id?.toString() !== user?._id?.toString()
+    );
+    const isOnline = otherUser ? onlineUsers.includes(otherUser._id) : false;
     const isAi = otherUser?.isAI;
-
-
 
   return (
     <>
-<div className="w-full h-16 px-4 flex items-center z-50 justify-between border-b border-[#243044] bg-[#111827]">
-{selectedChat && (
+<div className="w-full h-16 px-4 flex items-center justify-between border-b border-[#243044] bg-[#111827]">
+{selectedChat && otherUser && (
 <>
 <div className="flex items-center gap-3 mr-2">
 
