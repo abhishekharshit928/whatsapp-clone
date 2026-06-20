@@ -20,7 +20,7 @@ const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://whatsapp-clone-eight-orpin.vercel.app",
     credentials: true,
   },
 });
@@ -30,9 +30,20 @@ app.set("io", io);
 const DB_path = process.env.MONGO_URL;
 
 // Middlewares
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://whatsapp-clone-eight-orpin.vercel.app"
+];
+
 app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials:true
 }));
 
 app.use(express.json());

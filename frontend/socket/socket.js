@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socket = io("https://whatsapp-clone-fcp2.onrender.com", {
+const socket = io( import.meta.env.VITE_API_URL, {
   withCredentials: true,
   transports: ["websocket"],
 });
