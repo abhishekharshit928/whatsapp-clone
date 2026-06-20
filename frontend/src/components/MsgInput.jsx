@@ -16,10 +16,9 @@ const  MsgInput = () => {
     const [showEmojiPicker, setEmojiPicker] = useState(false)
 
     
-    const otherUser = chat?.participants?.find(
-        (u) => u._id !== user._id
-    );
-
+const otherUser = chat?.participants?.find(
+    (u) => u._id?.toString() !== user?._id?.toString()
+);
     const aiChatBot = otherUser?.isAI;
 
     const handleKeyDown = (e) => {

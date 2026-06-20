@@ -49,11 +49,11 @@ export const signup = async (req, res) => {
         participants: [newUser._id, aiUser._id]
       });
 
-const welcomeMessage = await Message.create({
-  senderId: aiUser._id,      // ✅ not sender
-  chatId: chat._id,          // ✅ not chat
-  text: "Hello! I'm NovaChat AI 🤖. Ask me anything.."  // ✅ not content
-});
+      const welcomeMessage = await Message.create({
+        senderId: aiUser._id,
+        chatId: chat._id,
+        text: "Hello! I'm NovaChat AI 🤖. Ask me anything.."
+      });
 
       chat.lastMessage = welcomeMessage._id;
       await chat.save();
@@ -75,12 +75,12 @@ const welcomeMessage = await Message.create({
       message: "Signup successful",
       user: {
         userName: newUser.userName,
-        id: newUser._id
+        _id: newUser._id
       }
     });
 
   } catch (error) {
-    console.log("Signup error:", error.message); 
+    console.log("Signup error:", error.message);
     return res.status(500).json({
       message: "server error in signup",
       error: error.message
@@ -89,81 +89,76 @@ const welcomeMessage = await Message.create({
 };
 
 
-export const login = async(req , res , next) => {
-    try {
+export const login = async (req, res, next) => {
+  try {
+    const { userName, password } = req.body;
 
-        const { userName, password } = req.body;
-
-        const user = await User.findOne({ userName })
-        if (!user) {
-            return res.status(400).json({ message: "User name not found" })
-        }
-        if (!password) {
-            return res.status(400).json({ message: "Password required" });
-        }
-
-        const isMatch = await bcrypt.compare(password , user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: "Invalid password" })
-        }
-
-        const accessToken = generateAccessToken(user._id);
-        const refreshToken = generateRefreshToken(user._id);
-
-        res.cookie("accessToken" , accessToken , {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 15* 60 * 1000
-        })
-
-        res.cookie("refreshToken" , refreshToken , {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        })
-
-        return res.status(200).json({
-            success: true,
-            message: "Login successful",
-            user: {
-                userName: user.userName,
-                id: user._id
-            },
-            accessToken
-        })
-     }catch (error) {
-        return res.status(500).json({ message: "server error in login" })
+    const user = await User.findOne({ userName })
+    if (!user) {
+      return res.status(400).json({ message: "User name not found" })
     }
+    if (!password) {
+      return res.status(400).json({ message: "Password required" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid password" })
+    }
+
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 15 * 60 * 1000
+    })
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    })
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      user: {
+        userName: user.userName,
+        _id: user._id
+      },
+      accessToken
+    })
+  } catch (error) {
+    return res.status(500).json({ message: "server error in login" })
+  }
 }
 
-export const logout = async(req , res , next) => {
-    try {
+export const logout = async (req, res, next) => {
+  try {
+    const userId = req.userId;
 
-        const userId = req.userId;
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 15 * 60 * 1000
+    })
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    })
 
+    return res.status(200).json({ message: "Logged out", success: true })
 
-        res.clearCookie("accessToken", {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 15 * 60 * 1000
-        })
-        res.clearCookie("refreshToken", {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        })
-
-        return res.status(200).json({ message: "Logged out", success: true })
-
-
-    } catch (error) {
-        return res.status(500).json({ message: "server error in logout" })
-    }
-
+  } catch (error) {
+    return res.status(500).json({ message: "server error in logout" })
+  }
 }
 
 
@@ -201,7 +196,11 @@ export const RefreshToken = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Access token refreshed",
-      accessToken: newAccessToken
+      accessToken: newAccessToken,
+      user: {
+        userName: user.userName,
+        _id: user._id
+      }
     });
 
   } catch (error) {

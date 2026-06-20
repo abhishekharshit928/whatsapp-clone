@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Chats from "../components/chats";
-import ChatWindow from "../components/chatWindow";
 import SideBar from "../components/sideBar";
 import SearchResults from "../components/searchResults";
 import LaptopSearch from "../components/LaptopSearch";

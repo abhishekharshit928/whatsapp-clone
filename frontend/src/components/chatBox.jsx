@@ -28,10 +28,10 @@ const chatBox = () =>{
     )}
     {selectedChat && (
       <div className="flex flex-col h-full">
-        <chatHead></chatHead>
+        <ChatHead></ChatHead>
 
         <div className="flex-1 overflow-y-auto ultra-thin-scroll">
-          <chatWindow></chatWindow>
+          <ChatWindow></ChatWindow>
         </div>
 
         {selectedMessage ?.length === 0 ? <MsgInput></MsgInput> : <DeleteMessage></DeleteMessage>}

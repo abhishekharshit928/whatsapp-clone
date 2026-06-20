@@ -12,17 +12,17 @@ export const sendMessage = async (req, res, next) => {
     const senderId = req.userId;
     const io = req.app.get("io");
 
-    const { receiver, text } = req.body;
+    const { reciever, message: text } = req.body;
 
-    if (senderId === receiver) {
+    if (senderId === reciever) {
       return res.status(400).json({ error: "You cannot send message to yourself" });
     }
 
-    if (!receiver || !text) {
+    if (! reciever || !text) {
       return res.status(400).json({ error: "missing receiver or text" });
     }
 
-    const receiverUser = await User.findById(receiver);
+    const receiverUser = await User.findById( reciever);
 
     if (!receiverUser) {
       return res.status(400).json({ error: "receiver not found" });
@@ -32,12 +32,12 @@ export const sendMessage = async (req, res, next) => {
     if (receiverUser.isAI) {
 
       let chat = await Chat.findOne({
-        participants: { $all: [senderId, receiver] }
+        participants: { $all: [senderId,  reciever] }
       });
 
       if (!chat) {
         chat = await Chat.create({
-          participants: [senderId, receiver]
+          participants: [senderId,  reciever]
         });
       }
 
@@ -62,8 +62,7 @@ export const sendMessage = async (req, res, next) => {
         });
       }
 
-      const result = await askGemini(text);
-      const aiReply = result.response.text();
+       const aiReply = await askGemini(text);
 
       if (senderSocketId) {
         io.to(senderSocketId).emit("AiTyping", {
@@ -74,7 +73,7 @@ export const sendMessage = async (req, res, next) => {
 
       const aiMessage = await Message.create({
         chatId: chat._id,
-        senderId: receiver,
+        senderId:  reciever,
         text: aiReply,
         media: []
       });
@@ -92,7 +91,7 @@ export const sendMessage = async (req, res, next) => {
     // NORMAL CHAT
 
     let chat = await Chat.findOne({
-      participants: { $all: [senderId, receiver] }
+      participants: { $all: [senderId,  reciever] }
     });
 
     if (!chat) {
