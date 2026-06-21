@@ -12,3 +12,6 @@ createRoot(document.getElementById('root')).render(
      </Provider> 
     </BrowserRouter>
 )
+
+const loader = document.getElementById('initial-loader')
+// if (loader) loader.remove()
