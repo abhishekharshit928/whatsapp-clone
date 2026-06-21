@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import api from "./api/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/authSlice";
-import socket from "./socket/socket.js";
+import socket from "../socket/socket.js";
 
 function App() {
   const dispatch = useDispatch();
