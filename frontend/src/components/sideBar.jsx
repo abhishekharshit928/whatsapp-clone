@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { IoReorderThreeOutline, IoCloseOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import logo from "../assets/logo.png";
 import Logout from "./logout";
 
 const SideBar = () => {
@@ -70,8 +69,8 @@ const SideBar = () => {
         >
           <div className="flex items-center gap-2">
             <img
-              src={logo}
-              alt="novaChat"
+            src="/logo.png"
+            alt="NovaChat Logo"
               className="w-9 h-9 rounded-lg object-cover"
             />
             <span

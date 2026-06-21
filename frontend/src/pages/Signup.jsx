@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import logo from "../assets/logo.png";
 import api from '../api/axios'
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +50,7 @@ return (
         
         <div className="text-center mb-8">
             <img
-            src={logo}
+            src="/logo.png"
             alt="NovaChat Logo"
             className="w-24 h-24 mx-auto mb-4 rounded-full shadow-lg"
             />
