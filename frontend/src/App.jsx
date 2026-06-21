@@ -17,7 +17,6 @@ function App() {
         const res = await api.post("/auth/refresh");
         dispatch(setUser(res.data.user));
       } catch (error) {
-        // no valid session — stay logged out
       } finally {
         setChecking(false);
       }
@@ -25,7 +24,18 @@ function App() {
     restoreSession();
   }, [dispatch]);
 
-  if (checking) return <div>Loading...</div>;
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-linear-to-br from-slate-950 via-gray-900 to-indigo-950 flex flex-col items-center justify-center">
+        <img
+          src="/logo.png"
+          alt="NovaChat Logo"
+          className="w-24 h-24 mb-4 rounded-full shadow-lg"
+        />
+        <p className="text-purple-400 text-lg tracking-wide">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <Routes>
