@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import api from "./api/axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "./store/authSlice";
+import socket from "./socket/socket.js";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -23,6 +25,14 @@ function App() {
     };
     restoreSession();
   }, [dispatch]);
+
+    useEffect(() => {
+    if (user?._id) {
+      socket.emit("join", user._id);
+    }
+  }, [user]);
+
+  
 
   if (checking) {
     return (
