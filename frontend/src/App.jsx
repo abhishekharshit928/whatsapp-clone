@@ -28,6 +28,7 @@ function App() {
 
     useEffect(() => {
     if (user?._id) {
+      console.log("Emitting join for user:", user._id);
       socket.emit("join", user._id);
     }
   }, [user]);
