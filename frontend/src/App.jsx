@@ -4,14 +4,14 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import { useEffect, useState } from "react";
 import api from "./api/axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/authSlice";
 import socket from "./socket/socket.js";
-
 
 function App() {
   const dispatch = useDispatch();
   const [checking, setChecking] = useState(true);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const restoreSession = async () => {
@@ -26,14 +26,12 @@ function App() {
     restoreSession();
   }, [dispatch]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (user?._id) {
       console.log("Emitting join for user:", user._id);
       socket.emit("join", user._id);
     }
   }, [user]);
-
-  
 
   if (checking) {
     return (
