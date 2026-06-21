@@ -9,9 +9,16 @@
   <body>
     <div
       id="initial-loader"
-      style="position:fixed; inset:0; background:#111B21; display:flex; align-items:center; justify-content:center; color:#ffffff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; font-size:18px; letter-spacing:0.5px; z-index:9999;"
+      style="position:fixed; inset:0; background:linear-gradient(to bottom right, #020617, #111827, #1e1b4b); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999;"
     >
-      Loading...
+      <img
+        src="/logo.png"
+        alt="NovaChat Logo"
+        style="width:96px; height:96px; border-radius:9999px; box-shadow:0 10px 25px rgba(0,0,0,0.5); margin-bottom:16px;"
+      />
+      <p style="color:#a78bfa; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; font-size:18px; letter-spacing:0.5px; margin:0;">
+        Loading...
+      </p>
     </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>

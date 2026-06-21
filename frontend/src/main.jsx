@@ -14,4 +14,4 @@ createRoot(document.getElementById('root')).render(
 )
 
 const loader = document.getElementById('initial-loader')
-// if (loader) loader.remove()
+ if (loader) loader.remove()
