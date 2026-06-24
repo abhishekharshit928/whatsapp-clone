@@ -77,7 +77,7 @@ const Chats = () => {
             );
 
             if (!otherUser) return null;
-            const isOnline = onlineUsers.includes(otherUser._id);
+            const isOnline = otherUser.isAI || onlineUsers.includes(otherUser._id);
 
             return (
               <div

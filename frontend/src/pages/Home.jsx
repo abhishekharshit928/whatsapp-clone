@@ -49,7 +49,7 @@ useEffect(() => {
     }
   };
 
-  const timer = setTimeout(fetchOnlineUsers, 1500);
+  const timer = setTimeout(fetchOnlineUsers, 2000);
 
   return () => clearTimeout(timer);
 }, [dispatch]);
