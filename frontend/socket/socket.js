@@ -9,17 +9,25 @@ const socket = io( import.meta.env.VITE_SOCKET_URL, {
 });
 
 let currentUserId = null;
+let listenersReady = false;
+
+export const setListenersReady = () => {
+  listenersReady = true;
+  if (currentUserId && socket.connected) {
+    socket.emit("join", currentUserId);
+  }
+};
 
 export const setUserId = (userId) => {
   currentUserId = userId;
-  if (socket.connected && userId) {
+  if (listenersReady && socket.connected && userId) {
     socket.emit("join", userId);
   }
 };
 
 socket.on("connect", () => {
   console.log("Socket connected");
-  if (currentUserId) {
+  if (listenersReady && currentUserId) {
     socket.emit("join", currentUserId);
   }
 });

@@ -6,7 +6,7 @@ import SideBar from "../components/sideBar";
 import SearchResults from "../components/searchResults";
 import LaptopSearch from "../components/LaptopSearch";
 import MobileSearch from "../components/MobileSearch";
-import socket, { setUserId } from "../../socket/socket";
+import socket, { setUserId, setListenersReady } from "../../socket/socket";
 import ChatBox from "../components/chatBox";
 import api from "../api/axios";
 import {
@@ -61,6 +61,8 @@ useEffect(() => {
  
     socket.on("userOnline", handleUserOnline);
     socket.on("userOffline", handleUserOffline);
+ 
+    setListenersReady();
  
     return () => {
       socket.off("userOnline", handleUserOnline);
