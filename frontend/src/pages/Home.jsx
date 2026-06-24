@@ -6,7 +6,7 @@ import SideBar from "../components/sideBar";
 import SearchResults from "../components/searchResults";
 import LaptopSearch from "../components/LaptopSearch";
 import MobileSearch from "../components/MobileSearch";
-import socket from "../../socket/socket";
+import socket, { setUserId } from "../../socket/socket";
 import ChatBox from "../components/chatBox";
 import api from "../api/axios";
 import {
@@ -33,11 +33,11 @@ function Home() {
   }, [storeLoading, user, navigate]);
 
 
-  useEffect(() => {
-    if (!user?._id) return;
+   useEffect(() => {
+     if (!user?._id) return;
 
-    socket.emit("join", user._id);
-  }, [user?._id]);
+     setUserId(user._id);
+   }, [user?._id]);
 
 useEffect(() => {
   const fetchOnlineUsers = async () => {
