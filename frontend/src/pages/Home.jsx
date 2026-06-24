@@ -40,20 +40,23 @@ function Home() {
   }, [user?._id]);
 
 useEffect(() => {
-    const fetchOnlineUsers = async () => {
-      try {
-        const res = await api.get("/user/online");
-        dispatch(setOnlineUsers(res.data.map((u) => u._id)));
-      } catch (err) {
-        console.log(err);
-      }
-    };
- 
-    fetchOnlineUsers();
- 
-    socket.on("connect", fetchOnlineUsers);
-    return () => socket.off("connect", fetchOnlineUsers);
-  }, [dispatch]);
+  const fetchOnlineUsers = async () => {
+    try {
+      const res = await api.get("/user/online");
+      dispatch(setOnlineUsers(res.data.map((u) => u._id)));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const timer = setTimeout(fetchOnlineUsers, 1500);
+
+  socket.on("reconnect", fetchOnlineUsers);
+  return () => {
+    clearTimeout(timer);
+    socket.off("reconnect", fetchOnlineUsers);
+  };
+}, [dispatch]);
 
 
   useEffect(() => {
