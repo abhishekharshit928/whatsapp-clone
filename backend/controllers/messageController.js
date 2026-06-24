@@ -153,7 +153,10 @@ export const fetchMessages = async (req, res) => {
 };
 
 export const sendMedia = async (req, res) => {
+  
   try{
+     console.log("BODY:", req.body);
+ console.log("FILES:", req.files);
     const io = req.app.get("io");
     const senderId = req.userId;
     const { receiver} = req.body;

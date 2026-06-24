@@ -19,9 +19,9 @@ const AddFile = () => {
   const user = useSelector((state) => state.auth.user);
   const chat = useSelector((state) => state.chat.selectedChat);
 
-  const otherUser = chat?.participants?.find(
-    (u) => u._id !== user?._id
-  );
+const otherUser = chat?.participants?.find(
+  (u) => u._id?.toString() !== user?._id?.toString()
+);
 
   const onSubmit = async (data) =>{
       try {

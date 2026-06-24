@@ -16,9 +16,12 @@ function App() {
   useEffect(() => {
     const restoreSession = async () => {
       try {
-        const res = await api.post("/auth/refresh");
+        const res = await api.post("/auth/refresh", null, {
+  _isSessionRestore: true  
+});
         dispatch(setUser(res.data.user));
       } catch (error) {
+        console.log(error);
       } finally {
         setChecking(false);
       }
@@ -26,12 +29,23 @@ function App() {
     restoreSession();
   }, [dispatch]);
 
-  useEffect(() => {
-    if (user?._id) {
-      console.log("Emitting join for user:", user._id);
-      socket.emit("join", user._id);
-    }
-  }, [user]);
+useEffect(() => {
+  if (!user?._id) return;
+
+  // Emit on initial connect
+  socket.emit("join", user._id);
+
+  // Re-emit on every reconnect
+  const handleReconnect = () => {
+    socket.emit("join", user._id);
+  };
+
+  socket.on("connect", handleReconnect);
+
+  return () => {
+    socket.off("connect", handleReconnect);
+  };
+}, [user]);
 
   if (checking) {
     return (

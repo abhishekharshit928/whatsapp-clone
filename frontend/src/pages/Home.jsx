@@ -21,15 +21,18 @@ function Home() {
   const openSearch = useSelector((state) => state.ui.openSearch);
 
   const dispatch = useDispatch();
+  const storeLoading = useSelector((state) => state.auth.storeLoading);
   const navigate = useNavigate();
 
   const isLoggedIn = Boolean(user);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!storeLoading && !user) {  
       navigate("/signup");
     }
-  }, [isLoggedIn, navigate]);
+  }, [storeLoading, user, navigate]);
+
+  if (storeLoading) return null;
 
   useEffect(() => {
     if (!user?._id) return;

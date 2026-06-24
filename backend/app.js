@@ -31,6 +31,7 @@ const io = new Server(server, {
 });
 
 
+
 // Middlewares
 app.use(cors({
   origin: (origin, callback) => {
@@ -191,7 +192,5 @@ mongoose.connect(DB_path)
 
 })
 .catch((err)=>{
-
   console.log("MongoDB Error:",err);
-
 });

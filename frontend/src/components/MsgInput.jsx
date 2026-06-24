@@ -39,10 +39,12 @@ const otherUser = chat?.participants?.find(
       const messageText = text;
       setText("");
 
-      await api.post("/messages/send",{
+      const res = await api.post("/messages/send",{
         reciever: otherUser._id,
         message: messageText,
       })
+
+      window.dispatchEvent(new CustomEvent("localMessage",{detail:res.data}));
     } catch(error){
       console.log("error in sending msg", error);
     }

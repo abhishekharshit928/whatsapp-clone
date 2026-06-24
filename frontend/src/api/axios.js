@@ -28,9 +28,10 @@ api.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/refresh")
+      !originalRequest.url.includes("/auth/refresh")&&
+      !originalRequest._isSessionRestore 
     ) {
-      // ✅ Queue the request if refresh is already in progress
+      
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });

@@ -3,7 +3,6 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoArrowBack } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { setSelectedChat } from "../store/chatSlice";
-// import MessageSearch from "./messageSeach";
 import { useEffect, useState } from "react";
 import ClearChat from "./clearChat";
 
@@ -51,7 +50,7 @@ className="min-[760px]:hidden text-gray-300 text-xl cursor-pointer hover:text-wh
 
 <div className="flex items-center gap-3 text-gray-300">
 
-{/* <MessageSearch/> */}
+
 
 <div 
 className="relative"
