@@ -31,11 +31,8 @@ function App() {
 
 useEffect(() => {
   if (!user?._id) return;
-
-  // Emit on initial connect
   socket.emit("join", user._id);
 
-  // Re-emit on every reconnect
   const handleReconnect = () => {
     socket.emit("join", user._id);
   };
@@ -45,7 +42,7 @@ useEffect(() => {
   return () => {
     socket.off("connect", handleReconnect);
   };
-}, [user]);
+}, [user?._id]);
 
   if (checking) {
     return (
