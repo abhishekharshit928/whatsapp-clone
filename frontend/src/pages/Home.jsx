@@ -43,7 +43,7 @@ useEffect(() => {
     const fetchOnlineUsers = async () => {
       try {
         const res = await api.get("/user/online");
-        dispatch(setOnlineUsers(res.data));
+        dispatch(setOnlineUsers(res.data.map((u) => u._id)));
       } catch (err) {
         console.log(err);
       }
