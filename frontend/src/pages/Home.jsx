@@ -51,6 +51,8 @@ function Home() {
     };
 
     fetchOnlineUsers();
+    socket.on("connect", fetchOnlineUsers);
+  return () => socket.off("connect", fetchOnlineUsers);
   }, [dispatch]);
 
   useEffect(() => {
