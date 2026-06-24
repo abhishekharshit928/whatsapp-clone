@@ -63,8 +63,8 @@ function Home() {
     });
 
     return () => {
-      socket.off("userOnline");
-      socket.off("userOffline");
+  socket.off("userOnline", handleUserOnline);
+  socket.off("userOffline", handleUserOffline);
     };
   }, [dispatch]);
 
