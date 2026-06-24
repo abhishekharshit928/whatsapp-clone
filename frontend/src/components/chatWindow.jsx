@@ -250,7 +250,20 @@ const ChatWindow = () => {
                       </div>
                     )}
                     {otherUser?.isAI && !isMe
-  ? <ReactMarkdown className="prose prose-invert prose-sm max-w-none">
+  ? <ReactMarkdown
+      components={{
+        p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
+        strong: ({children}) => <strong className="font-bold text-purple-300">{children}</strong>,
+        ul: ({children}) => <ul className="list-disc ml-4 mb-2 space-y-1">{children}</ul>,
+        ol: ({children}) => <ol className="list-decimal ml-4 mb-2 space-y-1">{children}</ol>,
+        li: ({children}) => <li className="text-gray-200">{children}</li>,
+        h1: ({children}) => <h1 className="text-lg font-bold mb-2 text-white">{children}</h1>,
+        h2: ({children}) => <h2 className="text-base font-bold mb-2 text-white">{children}</h2>,
+        h3: ({children}) => <h3 className="text-sm font-bold mb-1 text-white">{children}</h3>,
+        code: ({children}) => <code className="bg-black/30 px-1 rounded text-purple-300 text-xs">{children}</code>,
+        hr: () => <hr className="border-white/10 my-2"/>,
+      }}
+    >
       {msg.text}
     </ReactMarkdown>
   : msg.text
