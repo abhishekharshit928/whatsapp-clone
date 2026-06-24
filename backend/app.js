@@ -73,7 +73,7 @@ io.on("connection", (socket) => {
       });
 
 
-      socket.broadcast.emit("userOnline", userId);
+      io.emit("userOnline", userId);
 
 
     } catch (err) {
