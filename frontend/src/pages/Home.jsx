@@ -6,7 +6,7 @@ import SideBar from "../components/sideBar";
 import SearchResults from "../components/searchResults";
 import LaptopSearch from "../components/LaptopSearch";
 import MobileSearch from "../components/MobileSearch";
-import socket, { setUserId } from "../../socket/socket";
+import socket from "../../socket/socket";
 import ChatBox from "../components/chatBox";
 import api from "../api/axios";
 import {
@@ -33,6 +33,12 @@ function Home() {
   }, [storeLoading, user, navigate]);
 
 
+  useEffect(() => {
+    if (!user?._id) return;
+
+    socket.emit("join", user._id);
+  }, [user?._id]);
+
 useEffect(() => {
   const fetchOnlineUsers = async () => {
     try {
@@ -43,26 +49,24 @@ useEffect(() => {
     }
   };
 
-  fetchOnlineUsers();
+  const timer = setTimeout(fetchOnlineUsers, 2000);
+
+  return () => clearTimeout(timer);
 }, [dispatch]);
 
 
   useEffect(() => {
-    if (!user?._id) return;
-
     const handleUserOnline = (userId) => dispatch(addOnlineUser(userId));
     const handleUserOffline = (userId) => dispatch(removeOnlineuser(userId));
-
+ 
     socket.on("userOnline", handleUserOnline);
     socket.on("userOffline", handleUserOffline);
-
-    setUserId(user._id);
-
+ 
     return () => {
       socket.off("userOnline", handleUserOnline);
       socket.off("userOffline", handleUserOffline);
     };
-  }, [user?._id, dispatch]);
+  }, [dispatch]);
 
   return (
     <div className="flex overflow-hidden" style={{ height: "100dvh" }}>
