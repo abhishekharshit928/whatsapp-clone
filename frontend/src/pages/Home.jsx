@@ -50,19 +50,21 @@ function Home() {
 
 
   useEffect(() => {
+    if (!user?._id) return;
+
     const handleUserOnline = (userId) => dispatch(addOnlineUser(userId));
     const handleUserOffline = (userId) => dispatch(removeOnlineuser(userId));
- 
+
     socket.on("userOnline", handleUserOnline);
     socket.on("userOffline", handleUserOffline);
- 
+
     setUserId(user._id);
- 
+
     return () => {
       socket.off("userOnline", handleUserOnline);
       socket.off("userOffline", handleUserOffline);
     };
-  }, [dispatch]);
+  }, [user?._id, dispatch]);
 
   return (
     <div className="flex overflow-hidden" style={{ height: "100dvh" }}>
