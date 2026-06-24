@@ -42,7 +42,7 @@ className="min-[760px]:hidden text-gray-300 text-xl cursor-pointer hover:text-wh
 </p>
 
 <p className="text-xs text-green-400">
-{isOnline || isAi ? "online" : "offline"}
+{isAi ? "AI" : isOnline ? "online" : "offline"}
 </p>
 </div>
 
