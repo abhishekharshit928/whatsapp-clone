@@ -51,11 +51,7 @@ useEffect(() => {
 
   const timer = setTimeout(fetchOnlineUsers, 1500);
 
-  socket.on("reconnect", fetchOnlineUsers);
-  return () => {
-    clearTimeout(timer);
-    socket.off("reconnect", fetchOnlineUsers);
-  };
+  return () => clearTimeout(timer);
 }, [dispatch]);
 
 
