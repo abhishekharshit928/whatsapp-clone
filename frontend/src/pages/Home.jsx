@@ -33,7 +33,7 @@ function Home() {
   }, [storeLoading, user, navigate]);
 
 
-  useEffect(() => {
+useEffect(() => {
   const fetchOnlineUsers = async () => {
     try {
       const res = await api.get("/user/online");
@@ -43,9 +43,7 @@ function Home() {
     }
   };
 
-  const timer = setTimeout(fetchOnlineUsers, 2000);
-
-  return () => clearTimeout(timer);
+  fetchOnlineUsers();
 }, [dispatch]);
 
 
