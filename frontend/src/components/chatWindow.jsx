@@ -5,6 +5,7 @@ import socket from "../../socket/socket.js";
 import { removeSelectedMessage, setSelectedMessage } from "../store/selectMessageSlice";
 import ChatHead from "./chatHead";
 import { BsCheck2, BsCheck2All } from "react-icons/bs";
+import ReactMarkdown from "react-markdown";
 
 const ChatWindow = () => {
   const user = useSelector(state => state.auth.user);
@@ -56,9 +57,6 @@ const ChatWindow = () => {
     }
   };
 
-
-  // ✅ FIX: Listen for optimistic messages sent from MsgInput
-  // This makes sent messages appear instantly without waiting for the socket event
   useEffect(() => {
     const handleLocalMessage = (e) => {
       const msg = e.detail;
@@ -80,7 +78,6 @@ const ChatWindow = () => {
     const handleNewMessage = message => {
       if (message.chatId?.toString() === selectedChat?._id?.toString()) {
         setMessages(prev => {
-          // ✅ FIX: Deduplicate — socket may re-deliver a message already added optimistically
           if (prev.some(m => m._id === message._id)) return prev;
           return [...prev, message];
         });
@@ -252,7 +249,12 @@ const ChatWindow = () => {
                         ))}
                       </div>
                     )}
-                    {msg.text}
+                    {otherUser?.isAI && !isMe
+  ? <ReactMarkdown className="prose prose-invert prose-sm max-w-none">
+      {msg.text}
+    </ReactMarkdown>
+  : msg.text
+}
                   </>
                 )
               }
