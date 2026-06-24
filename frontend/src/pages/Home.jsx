@@ -32,7 +32,6 @@ function Home() {
     }
   }, [storeLoading, user, navigate]);
 
-  if (storeLoading) return null;
 
   useEffect(() => {
     if (!user?._id) return;
@@ -40,7 +39,7 @@ function Home() {
     socket.emit("join", user._id);
   }, [user?._id]);
 
-  useEffect(() => {
+useEffect(() => {
     const fetchOnlineUsers = async () => {
       try {
         const res = await api.get("/user/online");
@@ -49,24 +48,24 @@ function Home() {
         console.log(err);
       }
     };
-
+ 
     fetchOnlineUsers();
+ 
     socket.on("connect", fetchOnlineUsers);
-  return () => socket.off("connect", fetchOnlineUsers);
+    return () => socket.off("connect", fetchOnlineUsers);
   }, [dispatch]);
 
+
   useEffect(() => {
-    socket.on("userOnline", (userId) => {
-      dispatch(addOnlineUser(userId));
-    });
-
-    socket.on("userOffline", (userId) => {
-      dispatch(removeOnlineuser(userId));
-    });
-
+    const handleUserOnline = (userId) => dispatch(addOnlineUser(userId));
+    const handleUserOffline = (userId) => dispatch(removeOnlineuser(userId));
+ 
+    socket.on("userOnline", handleUserOnline);
+    socket.on("userOffline", handleUserOffline);
+ 
     return () => {
-  socket.off("userOnline", handleUserOnline);
-  socket.off("userOffline", handleUserOffline);
+      socket.off("userOnline", handleUserOnline);
+      socket.off("userOffline", handleUserOffline);
     };
   }, [dispatch]);
 

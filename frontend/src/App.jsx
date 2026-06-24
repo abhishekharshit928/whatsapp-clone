@@ -18,7 +18,7 @@ function App() {
       try {
         const res = await api.post("/auth/refresh", null, {
   _isSessionRestore: true  
-});
+ });
         dispatch(setUser(res.data.user));
       } catch (error) {
         console.log(error);
