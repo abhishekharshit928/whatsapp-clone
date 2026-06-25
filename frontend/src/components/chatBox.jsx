@@ -30,7 +30,7 @@ const chatBox = () =>{
       <div className="flex flex-col h-full">
         <ChatHead></ChatHead>
 
-        <div className="flex-1 overflow-y-auto ultra-thin-scroll">
+        <div className="flex-1 overflow-y-auto ultra-thin-scroll overflow-x-hidden">
           <ChatWindow></ChatWindow>
         </div>
 
