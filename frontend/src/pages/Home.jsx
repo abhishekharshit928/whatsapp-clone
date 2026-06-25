@@ -49,8 +49,8 @@ useEffect(() => {
     }
   };
 
-  const timer = setTimeout(fetchOnlineUsers, 2000);
-   const interval = setInterval(fetchOnlineUsers, 30000);
+  const timer = setTimeout(fetchOnlineUsers, 4000);
+   const interval = setInterval(fetchOnlineUsers, 15000);
 
   return () => {
     clearTimeout(timer)
