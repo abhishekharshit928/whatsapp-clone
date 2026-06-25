@@ -250,19 +250,19 @@ const ChatWindow = () => {
                       </div>
                     )}
                     {otherUser?.isAI && !isMe
-  ?  <div className="min-w-0 overflow-hidden break-words whitespace-pre-wrap" style={{wordBreak: "break-word", overflowWrap: "anywhere", whiteSpace: "pre-wrap"}}>
+  ?  <div className="min-w-0 overflow-hidden break-words whitespace-normal" style={{wordBreak: "break-word", overflowWrap: "anywhere"}}>
   <ReactMarkdown
       components={{
-        p: ({children}) => <p className="mb-2 last:mb-0 break-words whitespace-pre-wrap">{children}</p>,
+        p: ({children}) => <p className="mb-2 last:mb-0 break-words whitespace-normal">{children}</p>,
         strong: ({children}) => <strong className="font-bold text-purple-300 break-words">{children}</strong>,
         ul: ({children}) => <ul className="list-disc ml-4 mb-2 space-y-1 break-words">{children}</ul>,
         ol: ({children}) => <ol className="list-decimal ml-4 mb-2 space-y-1 break-words">{children}</ol>,
-        li: ({children}) => <li className="text-gray-200 break-words whitespace-pre-wrap">{children}</li>,
+        li: ({children}) => <li className="text-gray-200 break-words whitespace-normal">{children}</li>,
         h1: ({children}) => <h1 className="text-lg font-bold mb-2 text-white break-words">{children}</h1>,
         h2: ({children}) => <h2 className="text-base font-bold mb-2 text-white break-words">{children}</h2>,
         h3: ({children}) => <h3 className="text-sm font-bold mb-1 text-white break-words">{children}</h3>,
-        code: ({children}) => <code className="bg-black/30 px-1 rounded text-purple-300 text-xs break-words whitespace-pre-wrap">{children}</code>,
-        pre: ({children}) => <pre className="break-words whitespace-pre-wrap">{children}</pre>,
+        code: ({children}) => <code className="bg-black/30 px-1 rounded text-purple-300 text-xs break-words whitespace-normal">{children}</code>,
+        pre: ({children}) => <pre className="break-words whitespace-normal">{children}</pre>,
         hr: () => <hr className="border-white/10 my-2"/>,
       }}
     >
