@@ -181,6 +181,7 @@ mongoose.connect(DB_path)
 .then(()=>{
 
   console.log("Connected to MongoDB");
+  await User.updateMany({}, { isOnline: false, socketId: null });
 
 
   server.listen(PORT,()=>{
