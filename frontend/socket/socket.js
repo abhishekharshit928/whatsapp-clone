@@ -6,6 +6,8 @@ const socket = io( import.meta.env.VITE_SOCKET_URL, {
   reconnection: true,
   reconnectionAttempts: "infinity",
   reconnectionDelay: 1000,
+  pingInterval: 10000,  
+  pingTimeout: 5000, 
 });
 
 socket.on("connect", () => console.log("Socket connected"));

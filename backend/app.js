@@ -27,6 +27,8 @@ const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
     credentials: true,
+    pingInterval: 10000,
+    pingTimeout: 5000,
   },
 });
 
