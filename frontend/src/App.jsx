@@ -31,7 +31,7 @@ function App() {
 
 useEffect(() => {
   if (!user?._id) return;
-  // socket.emit("join", user._id);
+   socket.emit("join", user._id);
 
   const handleReconnect = () => {
     if (user?._id) socket.emit("join", user._id);
