@@ -27,7 +27,7 @@ const chatBox = () =>{
       </div>
     )}
     {selectedChat && (
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full w-full overflow-hidden">
         <ChatHead></ChatHead>
 
         <div className="flex-1 overflow-y-auto ultra-thin-scroll overflow-x-hidden">
