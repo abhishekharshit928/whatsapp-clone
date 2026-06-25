@@ -29,7 +29,7 @@ export const fetchAllUser = async (req ,res , next) => {
 export const fetchOnlineUser = async (req , res , next) =>{
   try {
      const users = await User.find({
-   isOnline:true,
+    socketId: { $ne: null },
    _id:{
      $ne:req.userId
    }
