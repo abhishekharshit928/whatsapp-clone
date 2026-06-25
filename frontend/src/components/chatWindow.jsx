@@ -202,7 +202,7 @@ const ChatWindow = () => {
             key={msg._id}
             onContextMenu={(e) => handelSelection(e, msg)}
             className={`
-             ${otherUser?.isAI && !isMe ? "max-w-[90%]" : "max-w-[60%]"} w-fit shadow-lg
+            ${otherUser?.isAI && !isMe ? "max-w-[90%] w-auto overflow-hidden" : "max-w-[60%] w-fit"} shadow-lg
               ${msg.isDeleted
                 ? `px-3 py-1.5 text-[15px] leading-relaxed ${isMe ? "rounded-2xl rounded-br-md" : "rounded-2xl rounded-bl-md"}`
                 : onlyEmoji

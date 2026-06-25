@@ -4,7 +4,7 @@ const socket = io( import.meta.env.VITE_SOCKET_URL, {
   withCredentials: true,
   transports: ["websocket" , "polling"],
   reconnection: true,
-  reconnectionAttempts: "infinity",
+  reconnectionAttempts: infinity,
   reconnectionDelay: 1000,
   pingInterval: 10000,  
   pingTimeout: 5000, 
