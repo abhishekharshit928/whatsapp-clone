@@ -40,14 +40,19 @@ function Home() {
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    const timer = setTimeout(fetchOnlineUsers, 2000);
-    const interval = setInterval(fetchOnlineUsers, 10000);
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
-  }, [fetchOnlineUsers]);
+useEffect(() => {
+  const t1 = setTimeout(fetchOnlineUsers, 2000);
+  const t2 = setTimeout(fetchOnlineUsers, 5000);
+  const t3 = setTimeout(fetchOnlineUsers, 10000);
+  const interval = setInterval(fetchOnlineUsers, 10000);
+
+  return () => {
+    clearTimeout(t1);
+    clearTimeout(t2);
+    clearTimeout(t3);
+    clearInterval(interval);
+  };
+}, [fetchOnlineUsers]);
   useEffect(() => {
     const handleUserOnline = () => fetchOnlineUsers();
     const handleUserOffline = (userId) => dispatch(removeOnlineuser(userId));

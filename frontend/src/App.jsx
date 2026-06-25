@@ -28,21 +28,23 @@ function App() {
     };
     restoreSession();
   }, [dispatch]);
-
 useEffect(() => {
   if (!user?._id) return;
-   socket.emit("join", user._id);
 
-  const handleReconnect = () => {
-    if (user?._id) socket.emit("join", user._id);
-  };
+  socket.emit("join", user._id);
 
-  handleReconnect();
+  const t1 = setTimeout(() => socket.emit("join", user._id), 2000);
+  const t2 = setTimeout(() => socket.emit("join", user._id), 5000);
+  const t3 = setTimeout(() => socket.emit("join", user._id), 10000);
 
+  const handleReconnect = () => socket.emit("join", user._id);
   socket.on("connect", handleReconnect);
 
   return () => {
     socket.off("connect", handleReconnect);
+    clearTimeout(t1);
+    clearTimeout(t2);
+    clearTimeout(t3);
   };
 }, [user?._id]);
 
