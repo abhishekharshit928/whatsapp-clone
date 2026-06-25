@@ -40,7 +40,7 @@ const otherUser = chat?.participants?.find(
       setText("");
 
       const res = await api.post("/messages/send",{
-        reciever: otherUser._id,
+        reciever: otherUser._id?.toString(),
         message: messageText,
       })
 
