@@ -50,8 +50,12 @@ useEffect(() => {
   };
 
   const timer = setTimeout(fetchOnlineUsers, 2000);
+   const interval = setInterval(fetchOnlineUsers, 30000);
 
-  return () => clearTimeout(timer);
+  return () => {
+    clearTimeout(timer)
+    clearInterval(interval);
+  }
 }, [dispatch]);
 
 
