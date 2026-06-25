@@ -28,7 +28,7 @@ const otherUser = chat?.participants?.find(
       }
     }
 
-    const sendMessage = async () => {
+    const sendMessage = async (retryCount = 0) => {
     try{
       if(!otherUser?._id){
         console.log("no reciever selected");
@@ -47,6 +47,12 @@ const otherUser = chat?.participants?.find(
       window.dispatchEvent(new CustomEvent("localMessage",{detail:res.data}));
     } catch(error){
       console.log("error in sending msg", error);
+
+
+      if (error.response?.status === 500 && retryCount === 0) {
+      console.log("Server cold start, retrying in 3s...");
+      setTimeout(() => sendMessage(retryCount + 1), 3000);
+    }
     }
   };
 
