@@ -250,7 +250,7 @@ const ChatWindow = () => {
                       </div>
                     )}
                     {otherUser?.isAI && !isMe
-  ?  <div className="w-full wrap-break-word overflow-hidden">
+  ?  <div className="min-w-0 break-words overflow-hidden">
   <ReactMarkdown
       components={{
         p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
