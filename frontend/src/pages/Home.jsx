@@ -69,7 +69,7 @@ useEffect(() => {
   if (storeLoading) return null;
 
   return (
-    <div className="flex overflow-hidden" style={{ height: "100dvh" }}>
+    <div className="flex overflow-hidden w-full" style={{ height: "100dvh" }}>
       <div
         className={`
           bg-[#111827]
@@ -103,10 +103,7 @@ useEffect(() => {
 
       <div
         className={`
-          bg-[#0B1220]
-          flex-1
-          h-full
-          text-gray-400
+          bg-[#0B1220] flex-1 h-full text-gray-400 overflow-hidden min-w-0 
           ${selectedChat ? "block" : "hidden min-[760px]:block"}
         `}
       >
