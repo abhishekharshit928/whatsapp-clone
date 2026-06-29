@@ -170,7 +170,7 @@ const ChatWindow = () => {
 
 
   return (
-    <div className="p-4 space-y-3 pb-10 overflow-x-hidden w-full">
+    <div className="p-4 space-y-3 pb-10 w-full overflow-x-hidden box-border">
 
       {loading && (
         <div className="flex justify-center items-center">
@@ -198,11 +198,11 @@ const ChatWindow = () => {
         const onlyEmoji = !hasMedia && isEmojiOnly(msg.text);
 
         return (
+          <div key={msg._id} className={`flex w-full ${isMe ? "justify-end" : "justify-start"}`}>
           <div
-            key={msg._id}
             onContextMenu={(e) => handelSelection(e, msg)}
             className={`
-            ${otherUser?.isAI && !isMe ? "w-full max-w-full min-w-0 overflow-hidden break-words whitespace-pre-wrap" : "max-w-[60%] w-fit"} shadow-lg
+            ${otherUser?.isAI && !isMe ? "w-full max-w-full min-w-0 overflow-hidden break-words whitespace-pre-wrap" : "max-w-[75%] min-w-0"} shadow-lg
               ${msg.isDeleted
                 ? `px-3 py-1.5 text-[15px] leading-relaxed ${isMe ? "rounded-2xl rounded-br-md" : "rounded-2xl rounded-bl-md"}`
                 : onlyEmoji
@@ -213,12 +213,12 @@ const ChatWindow = () => {
                        ${isMe ? "rounded-2xl rounded-br-md" : "rounded-2xl rounded-bl-md"}`
               }
               ${msg.isDeleted
-                ? `${isMe ? "ml-auto" : ""} bg-white/5 backdrop-blur-md border border-white/10 text-gray-400`
+                ? `bg-white/5 backdrop-blur-md border border-white/10 text-gray-400`
                 : !onlyEmoji && isMe
-                  ? `ml-auto ${hasMedia ? "" : "bg-linear-to-br from-purple-400 to-purple-600"} text-white ${hasMedia ? "" : "shadow-purple-900/40"}`
+                  ? `${hasMedia ? "" : "bg-linear-to-br from-purple-400 to-purple-600"} text-white ${hasMedia ? "" : "shadow-purple-900/40"}`
                   : !onlyEmoji
                     ? `${hasMedia ? "" : "bg-white/5 backdrop-blur-md border border-white/10"} text-gray-200`
-                    : isMe ? "ml-auto" : ""
+                    : ""
               }
               ${isSelected ? "ring-2 ring-purple-400" : ""}
             `}
@@ -290,6 +290,7 @@ const ChatWindow = () => {
                   : <BsCheck2All className="text-white/60 text-sm" />
               )}
             </div>
+          </div>
           </div>
         );
       })}
