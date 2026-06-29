@@ -287,7 +287,7 @@ const ChatWindow = () => {
               {isMe && (
                 msg.seen
                   ? <BsCheck2All className="text-[#34B7F1] text-sm" />
-                  : <BsCheck2All className="text-white/60 text-sm" />
+                  : <BsCheck2 className="text-white/60 text-sm" />
               )}
             </div>
           </div>

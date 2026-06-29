@@ -57,7 +57,7 @@ export const sendMessage = async (req, res, next) => {
       if (senderSocketId) {
         io.to(senderSocketId).emit("newMessage", userMessage);
 
-        io.to(senderSocketId).emit("AiTyping", {
+        io.to(senderSocketId).emit("aiTyping", {
           chatId: chat._id,
           status: true
         });
@@ -66,7 +66,7 @@ export const sendMessage = async (req, res, next) => {
        const aiReply = await askGemini(text);
 
       if (senderSocketId) {
-        io.to(senderSocketId).emit("AiTyping", {
+        io.to(senderSocketId).emit("aiTyping", {
           chatId: chat._id,
           status: false
         });
