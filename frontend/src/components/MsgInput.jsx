@@ -77,14 +77,13 @@ const otherUser = chat?.participants?.find(
     return (
       <>
       <div className="
-        w-full
-        h-15
-        bg-[#0b1020]/80
-        border-t
-         border-white/10
-        flex items-center px-4  gap-3 backdrop-blur-xl
-
-      ">
+  w-full
+  h-15
+  bg-[#0b1020]/80
+  border-t
+  border-white/10
+  flex items-center px-3 gap-2 backdrop-blur-xl overflow-hidden
+">
 
         {!aiChatBot && <AddFile/>}
         {aiChatBot && (
